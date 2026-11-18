@@ -1,0 +1,14 @@
+{
+    "name": "jasongomezzz/lab14-kms-s3",
+    "description": "Lab 14 - Seguridad en servicios AWS (KMS + S3)",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Jason Gomez",
+            "email": "jasongomezmancha@gmail.com"
+        }
+    ],
+    "require": {
+        "aws/aws-sdk-php": "^3.404"
+    }
+}
