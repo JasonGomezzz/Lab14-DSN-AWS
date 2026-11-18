@@ -1,0 +1,26 @@
+# Secretos y credenciales
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.aws/
+credentials*
+!*.example
+
+# Terraform
+*.tfstate*
+.terraform/
+terraform.tfvars
+
+# PHP / Composer
+vendor/
+
+# Salidas locales
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+coverage/
+tmp/
