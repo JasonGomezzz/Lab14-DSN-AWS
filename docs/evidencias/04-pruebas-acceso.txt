@@ -1,0 +1,41 @@
+# Pruebas de acceso - lab14 (2026-11-18 11:48)
+dev01 -> arn:aws:iam::511531632818:user/dev01
+dev03 -> arn:aws:iam::511531632818:user/dev03
+
+## dev01 lee la imagen cifrada con SSE-KMS
+$ aws s3api get-object --bucket <bucket> --key aws-servicios.png /var/folders/c6/pyr1h5r55sbd02sj6qvglzy00000gn/T/tmp.QGfLHrNWds/dev01.png --profile lab14-dev01 --query ServerSideEncryption
+RESULTADO: OK
+
+## dev03 lee data.txt (SSE-S3)
+$ aws s3api get-object --bucket <bucket> --key data.txt /var/folders/c6/pyr1h5r55sbd02sj6qvglzy00000gn/T/tmp.QGfLHrNWds/dev03.txt --profile lab14-dev03 --query ServerSideEncryption
+RESULTADO: OK
+
+## dev03 intenta leer la imagen cifrada con SSE-KMS
+$ aws s3api get-object --bucket <bucket> --key aws-servicios.png /var/folders/c6/pyr1h5r55sbd02sj6qvglzy00000gn/T/tmp.QGfLHrNWds/dev03.png --profile lab14-dev03
+RESULTADO: DENEGADO/ERROR
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the GetObject operation: User: arn:aws:iam::511531632818:user/dev03 is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:us-east-2:511531632818:key/8e8e598e-a07e-4178-b1ba-6155fbc96932 because no identity-based policy allows the kms:Decrypt action
+
+# Cifrado directo con la clave (API KMS)
+
+## dev01 cifra con la clave lab14
+$ aws kms encrypt --key-id alias/lab14 --plaintext fileb:///var/folders/c6/pyr1h5r55sbd02sj6qvglzy00000gn/T/tmp.QGfLHrNWds/plano.txt --query CiphertextBlob --output text --profile lab14-dev01
+RESULTADO: OK
+
+## dev03 intenta cifrar con la clave lab14
+$ aws kms encrypt --key-id alias/lab14 --plaintext fileb:///var/folders/c6/pyr1h5r55sbd02sj6qvglzy00000gn/T/tmp.QGfLHrNWds/plano.txt --query CiphertextBlob --output text --profile lab14-dev03
+RESULTADO: DENEGADO/ERROR
+
+aws: [ERROR]: An error occurred (AccessDeniedException) when calling the Encrypt operation: User: arn:aws:iam::511531632818:user/dev03 is not authorized to perform: kms:Encrypt on resource: arn:aws:kms:us-east-2:511531632818:key/8e8e598e-a07e-4178-b1ba-6155fbc96932 because no identity-based policy allows the kms:Encrypt action
+
+# Ida y vuelta Encrypt/Decrypt con dev01
+texto cifrado: 165 bytes
+descifrado: secreto-lab14
+
+# Script PHP del enunciado (src/ver-imagen.php)
+## PHP con perfil lab14-dev01
+RESULTADO: OK, devolvió una imagen PNG (33302 bytes)
+## PHP con perfil lab14-dev03
+RESULTADO: DENEGADO
+Error: AccessDenied
+User: arn:aws:iam::511531632818:user/dev03 is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:us-east-2:511531632818:key/8e8e598e-a07e-4178-b1ba-6155fbc96932 because no identity-based policy allows the kms:Decrypt action
