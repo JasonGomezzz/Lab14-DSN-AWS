@@ -1,0 +1,23 @@
+# Grupos de usuarios IAM
+------------------------
+|      ListGroups      |
++----------------------+
+|  Backend_Developer   |
+|  Developer           |
+|  Frontend_Developer  |
++----------------------+
+# Políticas del grupo Developer
+--------------------------------------
+|      ListAttachedGroupPolicies     |
++------------------------------------+
+|  ReadOnlyAccess                    |
+|  AWSKeyManagementServicePowerUser  |
+|  AmazonS3FullAccess                |
++------------------------------------+
+# Miembros del grupo Developer
+-----------
+|GetGroup |
++---------+
+|  dev02  |
+|  dev01  |
++---------+
