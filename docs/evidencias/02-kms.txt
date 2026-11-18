@@ -1,0 +1,64 @@
+# Metadatos de la clave alias/lab14
+------------------------------------------------------------------------------------------------
+|                                          DescribeKey                                         |
++-------------+--------------------------------------------------------------------------------+
+|  Arn        |  arn:aws:kms:us-east-2:511531632818:key/8e8e598e-a07e-4178-b1ba-6155fbc96932   |
+|  Cuenta     |  511531632818                                                                  |
+|  Estado     |  Enabled                                                                       |
+|  MultiRegion|  False                                                                         |
+|  Origen     |  AWS_KMS                                                                       |
+|  Spec       |  SYMMETRIC_DEFAULT                                                             |
+|  Uso        |  ENCRYPT_DECRYPT                                                               |
++-------------+--------------------------------------------------------------------------------+
+# Rotación automática
+---------------------------------------------------------------------------------------------------------
+|                                         GetKeyRotationStatus                                          |
++----------------------+--------------------------------------------------------------------------------+
+|  KeyId               |  arn:aws:kms:us-east-2:511531632818:key/8e8e598e-a07e-4178-b1ba-6155fbc96932   |
+|  KeyRotationEnabled  |  True                                                                          |
+|  NextRotationDate    |  2027-11-18T11:46:27.137000-05:00                                              |
+|  RotationPeriodInDays|  365                                                                           |
++----------------------+--------------------------------------------------------------------------------+
+# Política de la clave
+{
+  "Version" : "2012-10-17",
+  "Id" : "lab14-key-policy",
+  "Statement" : [ {
+    "Sid" : "HabilitarPermisosIAMdeLaCuenta",
+    "Effect" : "Allow",
+    "Principal" : {
+      "AWS" : "arn:aws:iam::511531632818:root"
+    },
+    "Action" : "kms:*",
+    "Resource" : "*"
+  }, {
+    "Sid" : "AdministradoresDeLaClave",
+    "Effect" : "Allow",
+    "Principal" : {
+      "AWS" : [ "arn:aws:iam::511531632818:user/dev01", "arn:aws:iam::511531632818:user/dev02" ]
+    },
+    "Action" : [ "kms:Create*", "kms:Describe*", "kms:Enable*", "kms:List*", "kms:Put*", "kms:Update*", "kms:Revoke*", "kms:Disable*", "kms:Get*", "kms:Delete*", "kms:TagResource", "kms:UntagResource", "kms:ScheduleKeyDeletion", "kms:CancelKeyDeletion" ],
+    "Resource" : "*"
+  }, {
+    "Sid" : "UsuariosDeLaClave",
+    "Effect" : "Allow",
+    "Principal" : {
+      "AWS" : [ "arn:aws:iam::511531632818:user/dev01", "arn:aws:iam::511531632818:user/dev02" ]
+    },
+    "Action" : [ "kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:DescribeKey" ],
+    "Resource" : "*"
+  }, {
+    "Sid" : "UsuariosDeLaClaveConGrantsDeServiciosAWS",
+    "Effect" : "Allow",
+    "Principal" : {
+      "AWS" : [ "arn:aws:iam::511531632818:user/dev01", "arn:aws:iam::511531632818:user/dev02" ]
+    },
+    "Action" : [ "kms:CreateGrant", "kms:ListGrants", "kms:RevokeGrant" ],
+    "Resource" : "*",
+    "Condition" : {
+      "Bool" : {
+        "kms:GrantIsForAWSResource" : "true"
+      }
+    }
+  } ]
+}
