@@ -106,20 +106,22 @@ bash scripts/aws/99-limpieza.sh --confirmar
 
 La clave KMS queda programada para eliminarse en 7 días (mínimo de AWS) y puede cancelarse en ese plazo.
 
-## Capturas para el informe (las toma el alumno, región Ohio)
+## Capturas (consola de AWS, región Ohio)
 
-Guardarlas en `docs/capturas/` con estos nombres:
+Tomadas sobre los recursos reales, en `docs/capturas/`.
 
-| Archivo | Qué mostrar |
-|---|---|
-| `01-grupos-iam.png` | IAM > Grupos de usuarios: Developer con 2 usuarios y permisos "Definido" |
-| `02-politicas-developer.png` | IAM > Developer > Permisos: las 3 políticas |
-| `03-bucket-s3.png` | S3 > Buckets: `ecomsecure-lab14-<ID>` en us-east-2 |
-| `04-clave-kms.png` | KMS > Claves administradas por el cliente > `lab14` (simétrica, KMS) |
-| `05-admin-usuarios-clave.png` | `lab14` > pestaña Política de claves: administradores y usuarios dev01 y dev02 |
-| `06-cifrado-objeto.png` | S3 > `aws-servicios.png` > Propiedades > Cifrado del lado del servidor: SSE-KMS con la clave lab14 |
-| `07-php-dev01.png` | Navegador con la imagen servida por el PHP (perfil dev01) |
-| `08-php-dev03.png` | Navegador con el error AccessDenied (perfil dev03) |
+| # | Captura | Qué demuestra |
+|---|---|---|
+| 1 | ![](docs/capturas/01-grupos-iam.png) | IAM: grupo `Developer` con 2 usuarios y permisos definidos; los grupos Backend y Frontend quedan vacíos |
+| 2 | ![](docs/capturas/02-politicas-developer.png) | `Developer` con `AmazonS3FullAccess`, `AWSKeyManagementServicePowerUser` y `ReadOnlyAccess` |
+| 3 | ![](docs/capturas/03-bucket-s3.png) | Bucket `ecomsecure-lab14-511531632818` en us-east-2 |
+| 4 | ![](docs/capturas/04-clave-kms.png) | Clave `lab14`: simétrica, habilitada, cifrado y descifrado |
+| 5 | ![](docs/capturas/05-politica-administradores.png) | Política de la clave: administradores `dev01` y `dev02` |
+| 6 | ![](docs/capturas/06-politica-usuarios-clave.png) | Política de la clave: usuarios con `Encrypt`, `Decrypt`, `ReEncrypt*` y `GenerateDataKey*` |
+| 7 | ![](docs/capturas/07-cifrado-objeto-sse-kms.png) | `aws-servicios.png` con SSE-KMS y el ARN de la clave `lab14` |
+| 8 | ![](docs/capturas/08-objetos-del-bucket.png) | Objetos del bucket: `aws-servicios.png` y `data.txt` |
+| 9 | ![](docs/capturas/09-php-dev01-imagen.png) | PHP con `dev01`: la imagen se descifra y se muestra |
+| 10 | ![](docs/capturas/10-php-dev03-accessdenied.png) | PHP con `dev03`: `AccessDenied` en `kms:Decrypt` |
 
 ## Conclusiones (borrador para editar)
 
@@ -132,4 +134,4 @@ Guardarlas en `docs/capturas/` con estos nombres:
 
 ## Repositorio
 
-`https://github.com/JasonGomezzz/Lab14-KMS-S3` (pendiente de crear y hacer `git push`).
+https://github.com/JasonGomezzz/Lab14-DSN-AWS
